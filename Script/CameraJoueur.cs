@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Camera : MonoBehaviour
+public class CameraJoueur : MonoBehaviour
 {
 
     /*
@@ -14,14 +14,37 @@ public class Camera : MonoBehaviour
     space : Moves camera on X and Z axis only.  So camera doesn't gain any height*/
 
 
-    float mainSpeed = 20.0f; //regular speed
+    float mainSpeed = 25.0f; //regular speed
     float shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
     float maxShift = 1000.0f; //Maximum speed when holdin gshift
     float camSens = 0.25f; //How sensitive it with mouse
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
+    private bool binModeCarteActif;
 
     void Update()
+    {
+        print("Mode carte actif : " + binModeCarteActif);
+        if (Input.GetKeyDown(KeyCode.PageUp))
+        {
+            binModeCarteActif = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            binModeCarteActif = false;
+        }
+        if (binModeCarteActif)
+        {
+            ModeCarte();
+        }
+        else
+        {
+            //Si en mode carte on ne peut pas bouger la caméra
+            UpdatePositionCamera();
+        }
+    }
+
+    private void UpdatePositionCamera()
     {
         lastMouse = Input.mousePosition - lastMouse;
         lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
@@ -31,7 +54,6 @@ public class Camera : MonoBehaviour
         //Mouse  camera angle done.  
 
         //Keyboard commands
-        float f = 0.0f;
         Vector3 p = GetBaseInput();
         if (p.sqrMagnitude > 0)
         { // only move while a direction key is pressed
@@ -85,5 +107,12 @@ public class Camera : MonoBehaviour
             p_Velocity += new Vector3(1, 0, 0);
         }
         return p_Velocity;
+    }
+
+    private void ModeCarte()
+    {
+        //Afficher la carte
+        transform.position = new Vector3(15, 50, 15);
+        //transform.eulerAngles = new Vector3(90, 0, 0);
     }
 }

@@ -46,8 +46,8 @@ public class wallSpawn : MonoBehaviour
         };
 
         // Loop through the 2d array
-        murExterieur = GameObject.Find("MurInterieur"); // Assign the GameObject
-        murInterieur = GameObject.Find("MurExterieur"); // Assign the GameObject
+        murInterieur = GameObject.Find("MurInterieur"); // Assign the GameObject
+        murExterieur = GameObject.Find("MurExterieur"); // Assign the GameObject
 
         for (int i = 0; i < map.GetLength(0); i++)
         {
@@ -57,13 +57,13 @@ public class wallSpawn : MonoBehaviour
                 if (map[i, j] == 'd')
                 {
                     // Spawn a wall object at the i,j coordinates
-                    Instantiate(murExterieur, new Vector3(i, 0, j), Quaternion.identity);
+                    Instantiate(murInterieur, new Vector3(i, 1, j), Quaternion.identity);
                 }
                 //Check if the current element is 'm' or 'j'
                 else if (map[i, j] == 'm' || map[i, j] == 'c')
                 {
                     // Spawn a wall object at the i,j coordinates
-                    Instantiate(murInterieur, new Vector3(i, 0, j), Quaternion.identity);
+                    Instantiate(murExterieur, new Vector3(i, 2, j), Quaternion.identity);
                 }
             }
         }
