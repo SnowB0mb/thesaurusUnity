@@ -46,8 +46,8 @@ public class wallSpawn : MonoBehaviour
         };
 
         // Loop through the 2d array
-        murExterieur = GameObject.Find("MurExterieur"); // Assign the GameObject
-        murInterieur = GameObject.Find("MurInterieur"); // Assign the GameObject
+        murExterieur = GameObject.Find("MurInterieur"); // Assign the GameObject
+        murInterieur = GameObject.Find("MurExterieur"); // Assign the GameObject
 
         for (int i = 0; i < map.GetLength(0); i++)
         {
