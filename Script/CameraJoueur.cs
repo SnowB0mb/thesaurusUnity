@@ -24,26 +24,63 @@ public class CameraJoueur : MonoBehaviour
     private Vector3 previousCameraPosition; //Position de la caméra avant de passer en mode carte
     private Quaternion objectOrientation; //Orientation de l'object avant de passer en mode carte
 
+    private GameObject tresor;
+
+    void Start()
+    {
+        tresor = GameObject.Find("Tresor");
+        if (tresor != null)
+        {
+            tresor.transform.SetParent(transform);
+            tresor.transform.localPosition = new Vector3(0, 1, 0); // Adjust this value to set the height above the camera
+        }
+        else
+        {
+            Debug.LogError("Tresor object not found");
+        }
+    }
     void Update()
     {
-        print("Mode carte actif : " + binModeCarteActif);
+        // print("Mode carte actif : " + binModeCarteActif);
         if (Input.GetKeyDown(KeyCode.PageUp) && !binModeCarteActif)
         {
             binModeCarteActif = true;
             ModeCarte();
+            if (tresor != null)
+            {
+                tresor.transform.SetParent(null);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.PageDown) && binModeCarteActif)
         {
             binModeCarteActif = false;
             //Retour au jeu
             RetourModeJeu();
+            if (tresor != null)
+            {
+                tresor.transform.SetParent(transform);
+            }
         }
 
-       
-        if(!binModeCarteActif)
+
+        if (!binModeCarteActif)
         {
-            //Si en mode carte on ne peut pas bouger la caméra
+            if (tresor != null)
+            {
+                Vector3 newPosition = transform.position;
+                Quaternion newRotation = transform.rotation;
+                tresor.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
+                tresor.transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
+            }
             UpdatePositionCamera();
+        }
+        else
+        {
+            if (tresor != null)
+            {
+                Vector3 newPosition = previousCameraPosition;
+                tresor.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
+            }
         }
     }
 
@@ -60,19 +97,10 @@ public class CameraJoueur : MonoBehaviour
         Vector3 p = GetBaseInput();
         if (p.sqrMagnitude > 0)
         { // only move while a direction key is pressed
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                totalRun += Time.deltaTime;
-                p = p * totalRun * shiftAdd;
-                p.x = Mathf.Clamp(p.x, -maxShift, maxShift);
-                p.y = Mathf.Clamp(p.y, -maxShift, maxShift);
-                p.z = Mathf.Clamp(p.z, -maxShift, maxShift);
-            }
-            else
-            {
-                totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
-                p = p * mainSpeed;
-            }
+
+
+            totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
+            p = p * mainSpeed;
 
             p = p * Time.deltaTime;
             Vector3 newPosition = transform.position;
@@ -126,7 +154,7 @@ public class CameraJoueur : MonoBehaviour
         //Afficher la carte
 
         //Set la position de Joueur
-        transform.position = new Vector3(15, 32, 15);
+        transform.position = new Vector3(15, 24, 15);
         //Set l'orientation de Joueur
         transform.rotation = Quaternion.Euler(90, 0, 0);
     }
