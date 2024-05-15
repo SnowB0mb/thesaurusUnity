@@ -21,23 +21,26 @@ public class CameraJoueur : MonoBehaviour
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
     private bool binModeCarteActif;
+    private Vector3 previousCameraPosition; //Position de la caméra avant de passer en mode carte
+    private Quaternion objectOrientation; //Orientation de l'object avant de passer en mode carte
 
     void Update()
     {
         print("Mode carte actif : " + binModeCarteActif);
-        if (Input.GetKeyDown(KeyCode.PageUp))
+        if (Input.GetKeyDown(KeyCode.PageUp) && !binModeCarteActif)
         {
             binModeCarteActif = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.PageDown))
-        {
-            binModeCarteActif = false;
-        }
-        if (binModeCarteActif)
-        {
             ModeCarte();
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.PageDown) && binModeCarteActif)
+        {
+            binModeCarteActif = false;
+            //Retour au jeu
+            RetourModeJeu();
+        }
+
+       
+        if(!binModeCarteActif)
         {
             //Si en mode carte on ne peut pas bouger la caméra
             UpdatePositionCamera();
@@ -111,8 +114,28 @@ public class CameraJoueur : MonoBehaviour
 
     private void ModeCarte()
     {
+        //perte de points quad utilise pageup
+
+        // Sauvegarder la position de la caméra
+        previousCameraPosition = transform.position;
+        // Sauvegarder l'orientation de l'object
+        objectOrientation = transform.rotation;
+
+
+        // Bouger la caméra au millieu en haut
         //Afficher la carte
-        transform.position = new Vector3(15, 50, 15);
-        //transform.eulerAngles = new Vector3(90, 0, 0);
+
+        //Set la position de Joueur
+        transform.position = new Vector3(15, 32, 15);
+        //Set l'orientation de Joueur
+        transform.rotation = Quaternion.Euler(90, 0, 0);
+    }
+    private void RetourModeJeu()
+    {
+        //Retour au jeu
+        //Set la position de Joueur
+        transform.position = previousCameraPosition;
+        //Set l'orientation de Joueur
+        transform.rotation = objectOrientation;
     }
 }
