@@ -15,24 +15,21 @@ public class CameraJoueur : MonoBehaviour
 
 
     float mainSpeed = 3.0f; //regular speed
-    float shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
-    float maxShift = 1000.0f; //Maximum speed when holdin gshift
     float camSens = 0.25f; //How sensitive it with mouse
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
     private bool binModeCarteActif;
     private Vector3 previousCameraPosition; //Position de la caméra avant de passer en mode carte
-    private Quaternion objectOrientation; //Orientation de l'object avant de passer en mode carte
-
-    private GameObject tresor;
+    private Quaternion previousCameraOrientation; //Orientation de l'object avant de passer en mode carte
+    private GameObject pionJoueur;
 
     void Start()
     {
-        tresor = GameObject.Find("Tresor");
-        if (tresor != null)
+        pionJoueur = GameObject.Find("Tresor");
+        if (pionJoueur != null)
         {
-            tresor.transform.SetParent(transform);
-            tresor.transform.localPosition = new Vector3(0, 1, 0); // Adjust this value to set the height above the camera
+            pionJoueur.transform.SetParent(transform);
+            pionJoueur.transform.localPosition = new Vector3(0, 1, 0); // Adjust this value to set the height above the camera
         }
         else
         {
@@ -46,9 +43,9 @@ public class CameraJoueur : MonoBehaviour
         {
             binModeCarteActif = true;
             ModeCarte();
-            if (tresor != null)
+            if (pionJoueur != null)
             {
-                tresor.transform.SetParent(null);
+                pionJoueur.transform.SetParent(null);
             }
         }
         else if (Input.GetKeyDown(KeyCode.PageDown) && binModeCarteActif)
@@ -56,30 +53,32 @@ public class CameraJoueur : MonoBehaviour
             binModeCarteActif = false;
             //Retour au jeu
             RetourModeJeu();
-            if (tresor != null)
+            if (pionJoueur != null)
             {
-                tresor.transform.SetParent(transform);
+                pionJoueur.transform.SetParent(transform);
             }
         }
 
 
         if (!binModeCarteActif)
         {
-            if (tresor != null)
+            if (pionJoueur != null)
             {
                 Vector3 newPosition = transform.position;
                 Quaternion newRotation = transform.rotation;
-                tresor.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
-                tresor.transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
+                pionJoueur.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
+                pionJoueur.transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
             }
             UpdatePositionCamera();
         }
         else
         {
-            if (tresor != null)
+            if (pionJoueur != null)
             {
                 Vector3 newPosition = previousCameraPosition;
-                tresor.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
+                Quaternion newRotation = previousCameraOrientation;
+                pionJoueur.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
+                pionJoueur.transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
             }
         }
     }
@@ -147,7 +146,7 @@ public class CameraJoueur : MonoBehaviour
         // Sauvegarder la position de la caméra
         previousCameraPosition = transform.position;
         // Sauvegarder l'orientation de l'object
-        objectOrientation = transform.rotation;
+        previousCameraOrientation = transform.rotation;
 
 
         // Bouger la caméra au millieu en haut
@@ -164,6 +163,6 @@ public class CameraJoueur : MonoBehaviour
         //Set la position de Joueur
         transform.position = previousCameraPosition;
         //Set l'orientation de Joueur
-        transform.rotation = objectOrientation;
+        transform.rotation = previousCameraOrientation;
     }
 }
