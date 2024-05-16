@@ -22,63 +22,55 @@ public class CameraJoueur : MonoBehaviour
     private Vector3 previousCameraPosition; //Position de la caméra avant de passer en mode carte
     private Quaternion previousCameraOrientation; //Orientation de l'object avant de passer en mode carte
     private GameObject pionJoueur;
+    private int hauteurPionJoueur = 5;
 
     void Start()
     {
-        pionJoueur = GameObject.Find("Tresor");
+        pionJoueur = GameObject.Find("PionJoueur");
+        pionJoueur.GetComponent<Renderer>().enabled = false;
         if (pionJoueur != null)
         {
-            pionJoueur.transform.SetParent(transform);
-            pionJoueur.transform.localPosition = new Vector3(0, 1, 0); // Adjust this value to set the height above the camera
+            pionJoueur.transform.localPosition = new Vector3(0, hauteurPionJoueur, 0);
+            pionJoueur.transform.eulerAngles = new Vector3(0, 45, 0);
         }
         else
         {
-            Debug.LogError("Tresor object not found");
+            Debug.LogError("PionJoueur object not found");
         }
     }
     void Update()
     {
         // print("Mode carte actif : " + binModeCarteActif);
-        if ((Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.Keypad9)) && !binModeCarteActif)
+        if ((Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.Keypad9)) && !binModeCarteActif) //PageUp
         {
+            pionJoueur.GetComponent<Renderer>().enabled = true;
             binModeCarteActif = true;
             ModeCarte();
-            if (pionJoueur != null)
-            {
-                pionJoueur.transform.SetParent(null);
-            }
         }
-        else if ((Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Keypad3)) && binModeCarteActif)
+        else if ((Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Keypad3)) && binModeCarteActif) //PageDown
         {
+            pionJoueur.GetComponent<Renderer>().enabled = false;
             binModeCarteActif = false;
             //Retour au jeu
             RetourModeJeu();
-            if (pionJoueur != null)
-            {
-                pionJoueur.transform.SetParent(transform);
-            }
         }
 
 
-        if (!binModeCarteActif)
+        if (!binModeCarteActif) //Mode carte désactivé
         {
             if (pionJoueur != null)
             {
                 Vector3 newPosition = transform.position;
-                Quaternion newRotation = transform.rotation;
-                pionJoueur.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
-                pionJoueur.transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
+                pionJoueur.transform.position = new Vector3(newPosition.x, hauteurPionJoueur, newPosition.z);
             }
             UpdatePositionCamera();
         }
-        else
+        else //Mode carte activé
         {
             if (pionJoueur != null)
             {
                 Vector3 newPosition = previousCameraPosition;
-                Quaternion newRotation = previousCameraOrientation;
-                pionJoueur.transform.position = new Vector3(newPosition.x, 5, newPosition.z);
-                pionJoueur.transform.rotation = Quaternion.Euler(0, newRotation.y, 0);
+                pionJoueur.transform.position = new Vector3(newPosition.x, hauteurPionJoueur, newPosition.z);
             }
         }
     }
@@ -90,7 +82,8 @@ public class CameraJoueur : MonoBehaviour
         lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
         transform.eulerAngles = lastMouse;
         lastMouse = Input.mousePosition;
-        //Mouse  camera angle done.  
+        pionJoueur.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y + 45, 0); //suivre l'orientation de la caméra, +45 pour ajuster l'orientation du pion joueur
+        //Mouse camera angle done.  
 
         //Keyboard commands
         Vector3 p = GetBaseInput();
@@ -104,11 +97,13 @@ public class CameraJoueur : MonoBehaviour
             p = p * Time.deltaTime;
             Vector3 newPosition = transform.position;
             if (Input.GetKey(KeyCode.Space))
-            { //If player wants to move on X and Z axis only
+            {
                 transform.Translate(p);
             }
             else
-            {
+            { //If player wants to move on X and Z axis only
+              //Si je joueur regarde directement vers le haut il ne se déplace plus
+                p.y = 0; //On ne prend pas en compte les mouvements en hauteur ce qui permet de toujours se déplacer dans le plan XZ, comme si la camera était toujours à l'horizontale
                 transform.Translate(p);
                 newPosition.x = transform.position.x;
                 newPosition.z = transform.position.z;
@@ -155,7 +150,7 @@ public class CameraJoueur : MonoBehaviour
         //Set la position de Joueur
         transform.position = new Vector3(15, 24, 15);
         //Set l'orientation de Joueur
-        transform.rotation = Quaternion.Euler(90, 0, 0);
+        transform.rotation = Quaternion.Euler(90, -90, 0);
     }
     private void RetourModeJeu()
     {
