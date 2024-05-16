@@ -39,7 +39,7 @@ public class CameraJoueur : MonoBehaviour
     void Update()
     {
         // print("Mode carte actif : " + binModeCarteActif);
-        if (Input.GetKeyDown(KeyCode.PageUp) && !binModeCarteActif)
+        if ((Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.Keypad9)) && !binModeCarteActif)
         {
             binModeCarteActif = true;
             ModeCarte();
@@ -48,7 +48,7 @@ public class CameraJoueur : MonoBehaviour
                 pionJoueur.transform.SetParent(null);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.PageDown) && binModeCarteActif)
+        else if ((Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Keypad3)) && binModeCarteActif)
         {
             binModeCarteActif = false;
             //Retour au jeu
