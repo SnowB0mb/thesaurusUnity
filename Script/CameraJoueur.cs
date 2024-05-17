@@ -14,6 +14,7 @@ public class CameraJoueur : MonoBehaviour
     space : Moves camera on X and Z axis only.  So camera doesn't gain any height*/
 
 
+    private bool hasInstantiated = false;
     float mainSpeed = 3.0f; //regular speed
     float camSens = 0.25f; //How sensitive it with mouse
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
@@ -23,6 +24,10 @@ public class CameraJoueur : MonoBehaviour
     private Quaternion previousCameraOrientation; //Orientation de l'object avant de passer en mode carte
     private GameObject pionJoueur;
     private int hauteurPionJoueur = 5;
+    public GameObject murEnclos; // The wall object to spawn
+
+
+
 
     void Start()
     {
@@ -72,6 +77,12 @@ public class CameraJoueur : MonoBehaviour
                 Vector3 newPosition = previousCameraPosition;
                 pionJoueur.transform.position = new Vector3(newPosition.x, hauteurPionJoueur, newPosition.z);
             }
+        }
+        murEnclos = GameObject.Find("MurEnclos");
+        if (!hasInstantiated && transform.position.x <= 13 && transform.position.z >= 15)
+        {
+            Instantiate(murEnclos, new Vector3(13, 1, 15), Quaternion.identity);
+            hasInstantiated = true;
         }
     }
 
