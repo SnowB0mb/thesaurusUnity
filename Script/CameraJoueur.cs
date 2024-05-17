@@ -23,6 +23,7 @@ public class CameraJoueur : MonoBehaviour
     private Vector3 previousCameraPosition; //Position de la caméra avant de passer en mode carte
     private Quaternion previousCameraOrientation; //Orientation de l'object avant de passer en mode carte
     private GameObject pionJoueur;
+    private GameObject MainCamera;
     private int hauteurPionJoueur = 5;
     public GameObject murEnclos; // The wall object to spawn
 
@@ -32,6 +33,7 @@ public class CameraJoueur : MonoBehaviour
     void Start()
     {
         pionJoueur = GameObject.Find("PionJoueur");
+        MainCamera = GameObject.Find("Main Camera");
         pionJoueur.GetComponent<Renderer>().enabled = false;
         if (pionJoueur != null)
         {
@@ -157,7 +159,10 @@ public class CameraJoueur : MonoBehaviour
 
     private void ModeCarte()
     {
-        //perte de points quad utilise pageup
+        //perte de points quad utilise pageup, -10 points par seconde
+
+        //Changer la projection pour orthographique
+        MainCamera.GetComponent<Camera>().orthographic = true;
 
         // Sauvegarder la position de la caméra
         previousCameraPosition = transform.position;
@@ -169,13 +174,15 @@ public class CameraJoueur : MonoBehaviour
         //Afficher la carte
 
         //Set la position de Joueur
-        transform.position = new Vector3(15, 24, 15);
+        transform.position = new Vector3(15, 800, 15);
         //Set l'orientation de Joueur
         transform.rotation = Quaternion.Euler(90, -90, 0);
     }
     private void RetourModeJeu()
     {
         //Retour au jeu
+        //Changer la projection pour perspective
+        MainCamera.GetComponent<Camera>().orthographic = false;
         //Set la position de Joueur
         transform.position = previousCameraPosition;
         //Set l'orientation de Joueur

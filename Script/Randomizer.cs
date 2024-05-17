@@ -8,9 +8,6 @@ public class Randomizer : MonoBehaviour
 {
     public GameObject FlechePrefab;
     public GameObject TresorPrefab;
-    public GameObject MurExterieurPrefab;
-    public GameObject MurInterieurPrefab;
-    public GameObject MurEnclorPrefab;
 
     public int niveau = 0;
 
@@ -59,6 +56,9 @@ public class Randomizer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FlechePrefab = GameObject.Find("Fleche");
+        TresorPrefab = GameObject.Find("Tresor");
+        MurEnclorPrefab = GameObject.Find("MurEnclos");
         bool binPosOkFleche = false;
         int posXFleche = 0;
         int posYFleche = 2;
@@ -88,7 +88,7 @@ public class Randomizer : MonoBehaviour
             Instantiate(FlechePrefab, positionsRandomFleche, Quaternion.identity);
             i++;
         }
-
+3
         bool binPosOkTresor = false;
         int posXTresor = 0;
         int posYTresor = 3;
@@ -108,28 +108,6 @@ public class Randomizer : MonoBehaviour
         }
         Vector3 positionsRandomTresor = new Vector3(posXTresor, posYTresor, posZTresor);
         Instantiate(TresorPrefab, positionsRandomTresor, Quaternion.identity);
-
-        for (int j = 0; j < tabCarte.GetLength(0); j++)
-        {
-            for (int k = 0; k < tabCarte.GetLength(1); k++)
-            {
-                if (tabCarte[j, k] == m)
-                {
-                    Vector3 positionsMur = new Vector3(j, 0, k);
-                    Instantiate(MurExterieurPrefab, positionsMur, Quaternion.identity);
-                } else if (tabCarte[j, k] == d)
-                {
-                    Vector3 positionsMurInterieur = new Vector3(j, 0, k);
-                    Instantiate(MurInterieurPrefab, positionsMurInterieur, Quaternion.identity);
-                } else if (tabCarte[j, k] == c)
-                {
-                    Vector3 positionsMurEnclos = new Vector3(j, 0, k);
-                    Instantiate(MurEnclorPrefab, positionsMurEnclos, Quaternion.identity);
-                }
-            }
-        }
-
-        
     }
 
 }
