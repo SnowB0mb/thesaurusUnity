@@ -125,22 +125,32 @@ public class CameraJoueur : MonoBehaviour
 
     private Vector3 GetBaseInput()
     { //returns the basic values, if it's 0 than it's not active.
+      //Quand le joueur bouge, active le timer
+        bool binJoueurBouge = false;
         Vector3 p_Velocity = new Vector3();
         if (Input.GetKey(KeyCode.W))
         {
             p_Velocity += new Vector3(0, 0, 1);
+            binJoueurBouge = true;
         }
         if (Input.GetKey(KeyCode.S))
         {
             p_Velocity += new Vector3(0, 0, -1);
+            binJoueurBouge = true;
         }
         if (Input.GetKey(KeyCode.A))
         {
             p_Velocity += new Vector3(-1, 0, 0);
+            binJoueurBouge = true;
         }
         if (Input.GetKey(KeyCode.D))
         {
             p_Velocity += new Vector3(1, 0, 0);
+            binJoueurBouge = true;
+        }
+        if (binJoueurBouge)
+        {
+            GameObject.Find("UI").GetComponent<UI>().binTimerDemarre = true;
         }
         return p_Velocity;
     }
