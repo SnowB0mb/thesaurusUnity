@@ -11,17 +11,23 @@ public class UI : MonoBehaviour
     public float timeRemaining = 10;
     public bool binTimerDemarre = false;
     public string timeText;
+
+    private void Start()
+    {
+        score = 300; // Initialize score here instead of OnGUI
+    }
     private void OnGUI()
     {
         score = 300;
+        DisplayTime(timeRemaining);
         GUI.Label(new Rect(10, 10, 100, 100), timeText.ToString(), scoreStyle);
         GUI.Label(new Rect(110, 10, 100, 100), score.ToString(), scoreStyle);
-        DisplayTime(timeRemaining);
 
     }
 
     void Update()
     {
+        DisplayTime(timeRemaining);
         if (binTimerDemarre)
         {
             if (timeRemaining > 0)
@@ -31,7 +37,7 @@ public class UI : MonoBehaviour
             else
             {
                 timeRemaining = 0;
-                binTimerDemarre = false;
+                // binTimerDemarre = false;
                 //Terminer le jeu
                 if (score > 200) //le jeu continue, le joueur doit recommerncer le niveau
                 {
@@ -46,7 +52,6 @@ public class UI : MonoBehaviour
     }
     void DisplayTime(float timeToDisplay)
     {
-        timeToDisplay += 1;
 
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
