@@ -58,7 +58,6 @@ public class Randomizer : MonoBehaviour
     {
         FlechePrefab = GameObject.Find("Fleche");
         TresorPrefab = GameObject.Find("Tresor");
-        MurEnclorPrefab = GameObject.Find("MurEnclos");
         bool binPosOkFleche = false;
         int posXFleche = 0;
         int posYFleche = 2;
@@ -88,10 +87,10 @@ public class Randomizer : MonoBehaviour
             Instantiate(FlechePrefab, positionsRandomFleche, Quaternion.identity);
             i++;
         }
-3
+
         bool binPosOkTresor = false;
         int posXTresor = 0;
-        int posYTresor = 3;
+        float posYTresor = 0.2f;
         int posZTresor = 0;
 
         while (binPosOkTresor == false)
@@ -107,7 +106,8 @@ public class Randomizer : MonoBehaviour
 
         }
         Vector3 positionsRandomTresor = new Vector3(posXTresor, posYTresor, posZTresor);
-        Instantiate(TresorPrefab, positionsRandomTresor, Quaternion.identity);
+        Quaternion rotation = Quaternion.Euler(90, 0, 0);
+        Instantiate(TresorPrefab, positionsRandomTresor, rotation);
     }
 
 }
