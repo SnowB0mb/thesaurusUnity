@@ -1,61 +1,83 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class UI : MonoBehaviour
 {
+    public Randomizer randomizer;
+    public OuvreursMurs ouvreursMurs;
     public int score;
-    public GUIStyle scoreStyle;
+    private int niveau; // Declare niveau at class level
+    private int nbOuvreurs;
     public float timeRemaining = 10;
     public bool binTimerDemarre = false;
-    public string timeText;
+    public Text timeText; // Assign your 'Chrono' Text object here in the Unity editor
+    public Text scoreText; // Assign your 'Score' Text object here in the Unity editor
+    public Text niveauText; // Assign your 'Niveau' Text object here in the Unity editor
+    public Text ouvreurMurText; // Assign your 'OuvreurMur' Text object here in the Unity editor
 
     private void Start()
     {
-        score = 300; // Initialize score here instead of OnGUI
-    }
-    private void OnGUI()
-    {
         score = 300;
-        DisplayTime(timeRemaining);
-        GUI.Label(new Rect(10, 10, 100, 100), timeText.ToString(), scoreStyle);
-        GUI.Label(new Rect(110, 10, 100, 100), score.ToString(), scoreStyle);
-
+        niveau = randomizer.niveau;
+        nbOuvreurs = ouvreursMurs.nbOuvreurs;
+        UpdateScoreText();
+        UpdateNiveauText();
+        //UpdateOuvreurMurText();
     }
 
     void Update()
     {
-        DisplayTime(timeRemaining);
+        UpdateScoreText();
+        if(nbOuvreurs != ouvreursMurs.nbOuvreurs)
+        {
+            UpdateOuvreurMurText();
+        }
         if (binTimerDemarre)
         {
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
+                DisplayTime(timeRemaining);
             }
             else
             {
                 timeRemaining = 0;
-                // binTimerDemarre = false;
-                //Terminer le jeu
-                if (score > 200) //le jeu continue, le joueur doit recommerncer le niveau
+                if (score > 200)
                 {
+                    print("Temps écoulé !");
                     score -= 200;
+                    UpdateScoreText();
                 }
-                else //le joueur à perdu c'est Game Over
+                else
                 {
-
+                    // Handle game over state here
                 }
             }
         }
     }
+
     void DisplayTime(float timeToDisplay)
     {
-
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
 
-        timeText = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    void UpdateScoreText()
+    {
+        scoreText.text = "Score : " + score.ToString();
+    }
+
+    void UpdateNiveauText()
+    {
+        niveauText.text = "Niveau : " + niveau.ToString(); // Use class level niveau variable
+    }
+
+    void UpdateOuvreurMurText()
+    {
+        score -= 50;
+        nbOuvreurs = ouvreursMurs.nbOuvreurs;
+        ouvreurMurText.text = "Ouvreurs de murs : " + nbOuvreurs.ToString();
     }
 }

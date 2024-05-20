@@ -3,7 +3,11 @@ guid: bfc2468700c0f8b48860d580b90c5161
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - FlechePrefab: {fileID: 1558579491131625225, guid: ea937cfec07fde748b9d583afaccf57a, type: 3}
+  - TresorPrefab: {fileID: 8845971463533100942, guid: 2862261550e76d24fb06f00f536a2f3a, type: 3}
+  - TeleTranspoPrefab: {fileID: 3482976321437778017, guid: ee6a0d78b3f4c6d48bfc014db1307516, type: 3}
+  - TeleReceptPrefab: {fileID: 828121009845619926, guid: e0ccf1105449f7748b875d8625ae0ca7, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

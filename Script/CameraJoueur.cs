@@ -15,7 +15,7 @@ public class CameraJoueur : MonoBehaviour
 
 
     private bool hasInstantiated = false;
-    float mainSpeed = 3.0f; //regular speed
+    float mainSpeed = 1.5f; //regular speed
     float camSens = 0.25f; //How sensitive it with mouse
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
@@ -109,19 +109,19 @@ public class CameraJoueur : MonoBehaviour
 
             p = p * Time.deltaTime;
             Vector3 newPosition = transform.position;
-            if (Input.GetKey(KeyCode.Space))
-            {
-                transform.Translate(p);
-            }
-            else
-            { //If player wants to move on X and Z axis only
-              //Si je joueur regarde directement vers le haut il ne se déplace plus
-                p.y = 0; //On ne prend pas en compte les mouvements en hauteur ce qui permet de toujours se déplacer dans le plan XZ, comme si la camera était toujours à l'horizontale
-                transform.Translate(p);
-                newPosition.x = transform.position.x;
-                newPosition.z = transform.position.z;
-                transform.position = newPosition;
-            }
+            // if (Input.GetKey(KeyCode.Space))
+            // {
+            //     transform.Translate(p);
+            // }
+            // else
+            // { //If player wants to move on X and Z axis only
+            //   Si je joueur regarde directement vers le haut il ne se déplace plus
+            p.y = 0; //On ne prend pas en compte les mouvements en hauteur ce qui permet de toujours se déplacer dans le plan XZ, comme si la camera était toujours à l'horizontale
+            transform.Translate(p);
+            newPosition.x = transform.position.x;
+            newPosition.z = transform.position.z;
+            transform.position = newPosition;
+            // }
         }
     }
 

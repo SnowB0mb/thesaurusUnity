@@ -3,7 +3,10 @@ guid: 98e5137efadd05b439030ae0f3e3d7e6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - murExterieur: {fileID: 7707317407979993571, guid: da42f7dc382a9f74db807d112d61a435, type: 3}
+  - murInterieur: {fileID: 4503093763040812088, guid: d2e222ec331d9dc458df662028d9b136, type: 3}
+  - murEnclos: {fileID: 7707317407979993571, guid: 8332a45761fa2dd4a846d909819ae8ae, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -8,8 +8,9 @@ public class Randomizer : MonoBehaviour
 {
     public GameObject FlechePrefab;
     public GameObject TresorPrefab;
-
-    public int niveau = 0;
+    public GameObject TeleTranspoPrefab;
+    public GameObject TeleReceptPrefab;
+    public int niveau = 6;
 
     public const char m = 'm';
     public const char v = 'v';
@@ -56,16 +57,43 @@ public class Randomizer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FlechePrefab = GameObject.Find("Fleche");
-        TresorPrefab = GameObject.Find("Tresor");
         bool binPosOkFleche = false;
+        int nbFleches = 18 - (niveau * 2);
         int posXFleche = 0;
         int posYFleche = 2;
         int posZFleche = 0;
 
-        int nbFleches = 18 - (niveau * 2);
+        bool binPosTT = false;
+        bool binPosTR = false;
         int nbTeleTransps = ((niveau + 1) / 2 | 0);
         int nbTeleRecepts = niveau;
+
+        int posXTT = 0;
+        int posYTT = 0;
+        int posZTT = 0;
+        int posXTR = 0;
+        int posYTR = 1;
+        int posZTR = 0;
+
+        bool binPosOkTresor = false;
+        int posXTresor = 0;
+        int posYTresor = 1;
+        int posZTresor = 0;
+
+        while (binPosOkTresor == false)
+        {
+            posXTresor = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
+            posZTresor = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
+
+            if (tabCarte[posXTresor, posZTresor] == v)
+            {
+                binPosOkTresor = true;
+                tabCarte[posXTresor, posZTresor] = V;
+            }
+
+        }
+        Vector3 positionsRandomTresor = new Vector3(posXTresor, posYTresor, posZTresor);
+        Instantiate(TresorPrefab, positionsRandomTresor, Quaternion.identity);
 
         int i = 0;
         while (i < nbFleches)
@@ -88,26 +116,47 @@ public class Randomizer : MonoBehaviour
             i++;
         }
 
-        bool binPosOkTresor = false;
-        int posXTresor = 0;
-        float posYTresor = 0.2f;
-        int posZTresor = 0;
-
-        while (binPosOkTresor == false)
+        int j = 0;
+        while (j < nbTeleTransps)
         {
-            posXTresor = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
-            posZTresor = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
-
-            if (tabCarte[posXTresor, posZTresor] == v)
+            binPosTT = false;
+            while (binPosTT == false)
             {
-                binPosOkTresor = true;
-                tabCarte[posXTresor, posZTresor] = V;
-            }
+                posXTT = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
+                posZTT = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
 
+                if (tabCarte[posXTT, posZTT] == v)
+                {
+                    binPosTT = true;
+                    tabCarte[posXTT, posZTT] = V;
+                }
+
+            }
+            Vector3 positionsRandomTT = new Vector3(posXTT, posYTT, posZTT);
+            Instantiate(TeleTranspoPrefab, positionsRandomTT, Quaternion.identity);
+            j++;
         }
-        Vector3 positionsRandomTresor = new Vector3(posXTresor, posYTresor, posZTresor);
-        Quaternion rotation = Quaternion.Euler(90, 0, 0);
-        Instantiate(TresorPrefab, positionsRandomTresor, rotation);
+
+        int k = 0;
+        while (k < nbTeleRecepts)
+        {
+            binPosTR = false;
+            while (binPosTR == false)
+            {
+                posXTR = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
+                posZTR = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
+
+                if (tabCarte[posXTR, posZTR] == v)
+                {
+                    binPosTR = true;
+                    tabCarte[posXTR, posZTR] = V;
+                }
+
+            }
+            Vector3 positionsRandomTR = new Vector3(posXTR, posYTR, posZTR);
+            Instantiate(TeleReceptPrefab, positionsRandomTR, Quaternion.identity);
+            k++;
+        }
     }
 
 }
