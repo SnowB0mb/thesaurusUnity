@@ -20,6 +20,7 @@ public class CameraJoueur : MonoBehaviour
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
     public bool binModeCarteActif;
+    public bool binCollisionTresor = false;
     private Vector3 previousCameraPosition; //Position de la caméra avant de passer en mode carte
     private Quaternion previousCameraOrientation; //Orientation de l'object avant de passer en mode carte
     private GameObject pionJoueur;
@@ -193,4 +194,13 @@ public class CameraJoueur : MonoBehaviour
         //Set l'orientation de Joueur
         transform.rotation = previousCameraOrientation;
     }
+
+    void OnCollisionEnter(Collision collision)
+{
+    if (collision.gameObject.name == "Tresor")
+    {
+        binCollisionTresor = true;
+        print("Collision avec le trésor !");
+    }
+}
 }

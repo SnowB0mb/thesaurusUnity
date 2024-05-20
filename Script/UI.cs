@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class UI : MonoBehaviour
 {
@@ -11,12 +12,14 @@ public class UI : MonoBehaviour
     private int niveau; // Declare niveau at class level
     private int nbOuvreurs;
     private bool binModeCarteActif;
-    public float timeRemaining = 10;
+    private bool binCollisionTresor;
+    public float timeRemaining = 30;
     public bool binTimerDemarre = false;
     public Text timeText; // Assign your 'Chrono' Text object here in the Unity editor
     public Text scoreText; // Assign your 'Score' Text object here in the Unity editor
     public Text niveauText; // Assign your 'Niveau' Text object here in the Unity editor
     public Text ouvreurMurText; // Assign your 'OuvreurMur' Text object here in the Unity editor
+    private bool finJeu = false;
 
     private void Start()
     {
@@ -24,6 +27,7 @@ public class UI : MonoBehaviour
         niveau = randomizer.niveau;
         nbOuvreurs = ouvreursMurs.nbOuvreurs;
         binModeCarteActif = cameraJoueur.binModeCarteActif;
+        binCollisionTresor = cameraJoueur.binCollisionTresor;
         UpdateScoreText();
         UpdateNiveauText();
         UpdateOuvreurMurText();
@@ -32,7 +36,7 @@ public class UI : MonoBehaviour
 
     void Update()
     {
-
+        binCollisionTresor = cameraJoueur.binCollisionTresor;
         UpdateScoreText();
         if (nbOuvreurs != ouvreursMurs.nbOuvreurs)
         {
@@ -44,6 +48,19 @@ public class UI : MonoBehaviour
             {
                 timeRemaining -= Time.deltaTime;
                 DisplayTime(timeRemaining);
+
+               
+                if (binCollisionTresor && !finJeu) //touche le trésor, gagne le niveau
+                {
+                    finJeu = true;
+                    score += Mathf.CeilToInt(10 * timeRemaining);
+                    
+                    DataStorage dataStorage = GetComponent<DataStorage>();
+                    dataStorage.dataScore = score;
+                    dataStorage.dataNiveau = niveau;
+                    //Changer de niveau
+                    //Remettre le joueur au milieu et replacer les objets
+                }
             }
             else
             {
@@ -53,6 +70,7 @@ public class UI : MonoBehaviour
                     print("Temps écoulé !");
                     score -= 200;
                     UpdateScoreText();
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reset the scene
                 }
                 else
                 {

@@ -29,32 +29,28 @@ public class OuvreursMurs : MonoBehaviour
         {
             if (nbOuvreurs > 0 && score > 50)
             {
-                //if (intScore >= 50)
+                //objSons.briseMur.play();
+
+                // Obtenir la cam�ra principale
+                Camera mainCamera = Camera.main;
+                if (mainCamera != null)
                 {
-                    //objSons.briseMur.play();
+                    // Position de d�part du raycast (position de la cam�ra)
+                    Vector3 origin = mainCamera.transform.position;
+                    // Direction du raycast (direction dans laquelle la cam�ra regarde)
+                    Vector3 direction = mainCamera.transform.forward;
 
-                    // Obtenir la cam�ra principale
-                    Camera mainCamera = Camera.main;
-                    if (mainCamera != null)
+                    // Lancer un raycast
+                    RaycastHit hit;
+                    if (Physics.Raycast(origin, direction, out hit, raycastDistance))
                     {
-                        // Position de d�part du raycast (position de la cam�ra)
-                        Vector3 origin = mainCamera.transform.position;
-                        // Direction du raycast (direction dans laquelle la cam�ra regarde)
-                        Vector3 direction = mainCamera.transform.forward;
-
-                        // Lancer un raycast
-                        RaycastHit hit;
-                        if (Physics.Raycast(origin, direction, out hit, raycastDistance))
+                        // V�rifier si l'objet touch� a un tag "Wall"
+                        if (hit.collider.CompareTag("MurInterieur"))
                         {
-                            // V�rifier si l'objet touch� a un tag "Wall"
-                            if (hit.collider.CompareTag("MurInterieur"))
-                            {
-                                // D�truire l'objet touch�
-                                Destroy(hit.collider.gameObject);
-                                nbOuvreurs--;
-                                //intScore -= 50;
-                                UnityEngine.Debug.Log("Mur d�truit !");
-                            }
+                            // D�truire l'objet touch�
+                            Destroy(hit.collider.gameObject);
+                            nbOuvreurs--;
+                            UnityEngine.Debug.Log("Mur d�truit !");
                         }
                     }
                 }

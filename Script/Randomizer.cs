@@ -10,7 +10,7 @@ public class Randomizer : MonoBehaviour
     public GameObject TresorPrefab;
     public GameObject TeleTranspoPrefab;
     public GameObject TeleReceptPrefab;
-    public int niveau = 6;
+    public int niveau = 0;
 
     public const char m = 'm';
     public const char v = 'v';
