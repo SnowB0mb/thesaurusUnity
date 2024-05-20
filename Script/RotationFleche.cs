@@ -17,14 +17,5 @@ public class RotationFleche : MonoBehaviour
     {
         //Rotation fleche sur elle-même
         gameObject.transform.RotateAround(gameObject.transform.position, transform.forward, RotationSpeed);
-        
-        //Faire pointer la fleche vers le tresor
-        GameObject tresor = GameObject.Find("Tresor");
-        if (tresor != null)
-        {
-            Vector3 direction = tresor.transform.position - transform.position;
-            direction.y = 0;
-            transform.rotation = Quaternion.LookRotation(direction);
-        }
     }
 }

@@ -118,7 +118,12 @@ public class Randomizer : MonoBehaviour
 
             }
             Vector3 positionsRandomFleche = new Vector3(posXFleche, posYFleche, posZFleche);
-            Instantiate(FlechePrefab, positionsRandomFleche, Quaternion.identity);
+            GameObject fleche = Instantiate(FlechePrefab, positionsRandomFleche, Quaternion.identity);
+
+            //Faire pointer la fleche vers le tresor
+            Vector3 direction = TresorPrefab.transform.position - fleche.transform.position;
+            direction.y = 0;
+            fleche.transform.rotation = Quaternion.LookRotation(direction);
             i++;
         }
 
