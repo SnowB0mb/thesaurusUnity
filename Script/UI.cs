@@ -22,7 +22,7 @@ public class UI : MonoBehaviour
         nbOuvreurs = ouvreursMurs.nbOuvreurs;
         UpdateScoreText();
         UpdateNiveauText();
-        //UpdateOuvreurMurText();
+        //UpdateOuvreurMurText(); //S'emballe si activé
     }
 
     void Update()

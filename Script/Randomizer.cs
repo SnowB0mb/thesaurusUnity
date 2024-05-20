@@ -72,18 +72,20 @@ public class Randomizer : MonoBehaviour
         int posYTT = 0;
         int posZTT = 0;
         int posXTR = 0;
-        int posYTR = 1;
+        int posYTR = 0;
         int posZTR = 0;
 
         bool binPosOkTresor = false;
         int posXTresor = 0;
-        int posYTresor = 1;
+        float posYTresor = 0.3f;
         int posZTresor = 0;
+        TresorPrefab = GameObject.Find("Tresor");
 
         while (binPosOkTresor == false)
         {
             posXTresor = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
             posZTresor = (int)Mathf.Round(UnityEngine.Random.Range(0, 31));
+
 
             if (tabCarte[posXTresor, posZTresor] == v)
             {
@@ -92,8 +94,12 @@ public class Randomizer : MonoBehaviour
             }
 
         }
-        Vector3 positionsRandomTresor = new Vector3(posXTresor, posYTresor, posZTresor);
-        Instantiate(TresorPrefab, positionsRandomTresor, Quaternion.identity);
+        if (TresorPrefab != null)
+        {
+            TresorPrefab.transform.localPosition = new Vector3(posXTresor, posYTresor, posZTresor);
+        }
+        // Vector3 positionsRandomTresor = new Vector3(posXTresor, posYTresor, posZTresor);
+        // Instantiate(TresorPrefab, positionsRandomTresor, Quaternion.identity);
 
         int i = 0;
         while (i < nbFleches)

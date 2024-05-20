@@ -30,6 +30,7 @@ public class CameraJoueur : MonoBehaviour
 
 
 
+
     void Start()
     {
         pionJoueur = GameObject.Find("PionJoueur");
