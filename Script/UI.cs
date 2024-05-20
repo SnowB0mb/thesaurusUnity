@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UI : MonoBehaviour
 {
     public Randomizer randomizer;
     public OuvreursMurs ouvreursMurs;
+    public CameraJoueur cameraJoueur;
     public int score;
     private int niveau; // Declare niveau at class level
     private int nbOuvreurs;
+    private bool binModeCarteActif;
     public float timeRemaining = 10;
     public bool binTimerDemarre = false;
     public Text timeText; // Assign your 'Chrono' Text object here in the Unity editor
@@ -20,15 +23,18 @@ public class UI : MonoBehaviour
         score = 300;
         niveau = randomizer.niveau;
         nbOuvreurs = ouvreursMurs.nbOuvreurs;
+        binModeCarteActif = cameraJoueur.binModeCarteActif;
         UpdateScoreText();
         UpdateNiveauText();
-        //UpdateOuvreurMurText(); //S'emballe si activé
+        UpdateOuvreurMurText();
+        InvokeRepeating("DiminueScoreCarte", 1.0f, 1.0f);
     }
 
     void Update()
     {
+
         UpdateScoreText();
-        if(nbOuvreurs != ouvreursMurs.nbOuvreurs)
+        if (nbOuvreurs != ouvreursMurs.nbOuvreurs)
         {
             UpdateOuvreurMurText();
         }
@@ -76,8 +82,20 @@ public class UI : MonoBehaviour
 
     void UpdateOuvreurMurText()
     {
-        score -= 50;
+        if (nbOuvreurs != ouvreursMurs.nbOuvreurs)
+        {
+            score -= 50;
+        }
         nbOuvreurs = ouvreursMurs.nbOuvreurs;
         ouvreurMurText.text = "Ouvreurs de murs : " + nbOuvreurs.ToString();
+    }
+
+    void DiminueScoreCarte()
+    {
+        if (cameraJoueur.binModeCarteActif)
+        {
+            score -= 10;
+            UpdateScoreText();
+        }
     }
 }

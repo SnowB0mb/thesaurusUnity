@@ -19,13 +19,15 @@ public class CameraJoueur : MonoBehaviour
     float camSens = 0.25f; //How sensitive it with mouse
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
-    private bool binModeCarteActif;
+    public bool binModeCarteActif;
     private Vector3 previousCameraPosition; //Position de la caméra avant de passer en mode carte
     private Quaternion previousCameraOrientation; //Orientation de l'object avant de passer en mode carte
     private GameObject pionJoueur;
     private GameObject MainCamera;
     private int hauteurPionJoueur = 5;
     public GameObject murEnclos; // The wall object to spawn
+    public UI ui;
+    private int score;
 
 
 
@@ -33,6 +35,7 @@ public class CameraJoueur : MonoBehaviour
 
     void Start()
     {
+        score = ui.score;
         pionJoueur = GameObject.Find("PionJoueur");
         MainCamera = GameObject.Find("Main Camera");
         pionJoueur.GetComponent<Renderer>().enabled = false;
@@ -48,21 +51,22 @@ public class CameraJoueur : MonoBehaviour
     }
     void Update()
     {
-        // print("Mode carte actif : " + binModeCarteActif);
-        if ((Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.Keypad9)) && !binModeCarteActif) //PageUp
+        score = ui.score;
+        //Mode carte
+        if (score > 10 && (Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.Keypad9)) && !binModeCarteActif) //PageUp
         {
             pionJoueur.GetComponent<Renderer>().enabled = true;
             binModeCarteActif = true;
             ModeCarte();
         }
-        else if ((Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Keypad3)) && binModeCarteActif) //PageDown
+        //Retour au jeu
+        else if (((Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Keypad3)) || score <= 10) && binModeCarteActif) //PageDown
         {
             pionJoueur.GetComponent<Renderer>().enabled = false;
             binModeCarteActif = false;
             //Retour au jeu
             RetourModeJeu();
         }
-
 
         if (!binModeCarteActif) //Mode carte désactivé
         {

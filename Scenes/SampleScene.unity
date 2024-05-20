@@ -558,6 +558,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1909230597803226487, guid: f1d0953002d78834a89aef5a8c3ca18c, type: 3}
+      propertyPath: ui
+      value: 
+      objectReference: {fileID: 1601582046}
+    - target: {fileID: 1909230597803226487, guid: f1d0953002d78834a89aef5a8c3ca18c, type: 3}
       propertyPath: murEnclos
       value: 
       objectReference: {fileID: 103671377}
@@ -672,6 +676,10 @@ PrefabInstance:
       propertyPath: randomizer
       value: 
       objectReference: {fileID: 724145196}
+    - target: {fileID: 5654393980612454125, guid: 4db4a5c343c065c42bf2b27415037b2e, type: 3}
+      propertyPath: cameraJoueur
+      value: 
+      objectReference: {fileID: 2045868225}
     - target: {fileID: 5654393980612454125, guid: 4db4a5c343c065c42bf2b27415037b2e, type: 3}
       propertyPath: ouvreursMurs
       value: 
@@ -1109,6 +1117,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f78002b42c5fa8d4096e06053f63cb84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2045868225 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1909230597803226487, guid: f1d0953002d78834a89aef5a8c3ca18c, type: 3}
+  m_PrefabInstance: {fileID: 614199285}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045868221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee606ee124658c74abd51440dfe682b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2053936208 stripped
